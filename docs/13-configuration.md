@@ -3,7 +3,7 @@ This section refers to the files in the directory *.aztk* that are generated fro
 
 ## *cluster.yaml*
 
-The core settings for a cluster are configured in the *cluster.yaml* file. Once you have set your desired values in *.aztk/cluster.yaml*, you can create a cluster using `aztk spark cluster create`. 
+The core settings for a cluster are configured in the *cluster.yaml* file. Once you have set your desired values in *.aztk/cluster.yaml*, you can create a cluster using `aztk spark cluster create`.
 
 This is the default cluster configuration:
 
@@ -37,7 +37,7 @@ Running `aztk spark cluster create` will create a cluster of 4 **Standard\_A2** 
 aztk spark cluster create --id spark --vm-size standard_a2 --size 4 --username spark --wait
 ```
 
-NOTE: This assumes that your SSH-key is configured in the *.aztk/secrets.yaml* file. 
+NOTE: This assumes that your SSH-key is configured in the *.aztk/secrets.yaml* file.
 
 ## *ssh.yaml*
 
@@ -62,7 +62,7 @@ Note that all of the settings in ssh.yaml will be overrided by parameters passed
 
 ## Spark Configuration
 
-The repository comes with default Spark configuration files which provision your Spark cluster just the same as you would locally. After running `aztk spark init` to initialize your working environment, you can view and edit these files at `.aztk/spark-defaults.conf` and `.aztk/spark-env.sh`. Please note that you can bring your own Spark configuration files by copying your `spark-defaults.conf` and `spark-env.sh` into your `.aztk/` direcotry.
+The repository comes with default Spark configuration files which provision your Spark cluster just the same as you would locally. After running `aztk spark init` to initialize your working environment, you can view and edit these files at `.aztk/spark-defaults.conf`, `.aztk/spark-env.sh` and `.aztk/core-site.xml`. Please note that you can bring your own Spark configuration files by copying your `spark-defaults.conf`, `spark-env.sh` and `core-site.xml` into your `.aztk/` direcotry.
 
 The following settings available in `spark-defaults.conf` and `spark-env.sh` are not supported:
 

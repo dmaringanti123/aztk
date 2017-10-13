@@ -1,7 +1,7 @@
 import os
 import yaml
 import typing
-from shutil import copyfile, rmtree
+from shutil import copyfile, copytree, rmtree
 from aztk import log
 from aztk import error
 from . import constants
@@ -9,7 +9,7 @@ from . import constants
 
 def load_spark_config():
     """
-        Copies the spark-defautls.conf and spark-env.sh in the .aztk/ diretory
+        Copies the spark-defautls.conf, spark-env.sh and core-site.xml in the .aztk/ diretory
     """
     if not os.path.exists(constants.DEFAULT_SPARK_CONF_DEST):
         os.mkdir(constants.DEFAULT_SPARK_CONF_DEST)
@@ -31,6 +31,27 @@ def load_spark_config():
     except Exception as e:
         pass
 
+    try:
+        copyfile(
+            os.path.join(constants.DEFAULT_SPARK_CONF_SOURCE, 'core-site.xml'),
+            os.path.join(constants.DEFAULT_SPARK_CONF_DEST, 'core-site.xml'))
+        log.info("Loaded core-site.xml")
+    except Exception as e:
+        pass
+
+    try:
+        # copytree expects destination to be empty, otherwise it will not copy
+        # force delete the content of this directoy to make sure newer files
+        # are copied over
+        if os.path.exists(constants.DEFAULT_SPARK_JARS_DEST):
+            rmtree(constants.DEFAULT_SPARK_JARS_DEST)
+
+        copytree(
+            constants.DEFAULT_SPARK_JARS_SOURCE,
+            constants.DEFAULT_SPARK_JARS_DEST)
+        log.info("Loaded jars")
+    except Exception as e:
+        pass
 
 def cleanup_spark_config():
     """
@@ -38,6 +59,9 @@ def cleanup_spark_config():
     """
     if os.path.exists(constants.DEFAULT_SPARK_CONF_DEST):
         rmtree(constants.DEFAULT_SPARK_CONF_DEST)
+
+    if os.path.exists(constants.DEFAULT_SPARK_JARS_DEST):
+        rmtree(constants.DEFAULT_SPARK_JARS_DEST)
 
 
 class SecretsConfig:
@@ -50,10 +74,6 @@ class SecretsConfig:
         self.storage_account_name = None
         self.storage_account_key = None
         self.storage_account_suffix = None
-
-        self.adl_tenant_id = None
-        self.adl_client_id = None
-        self.adl_credential = None
 
         self.docker_endpoint = None
         self.docker_username = None
@@ -111,22 +131,6 @@ class SecretsConfig:
         except KeyError:
             raise error.AztkError(
                 "Please specify a storage account suffix in your .aztk/secrets.yaml file")
-
-        try:
-            self.adl_tenant_id = secrets_config['adl']['tenantid']
-        except KeyError:
-            raise error.AztkError(
-                "Please specify an ADL Tenant ID in your .aztk/secrets.yaml file")
-        try:
-            self.adl_client_id = secrets_config['adl']['clientid']
-        except KeyError:
-            raise error.AztkError(
-                "Please specify an ADL Client ID in your .aztk/secrets.yaml file")
-        try:
-            self.adl_credential = secrets_config['adl']['credential']
-        except KeyError:
-            raise error.AztkError(
-                "Please specify an ADL Credential in your .aztk/secrets.yaml file")
 
         docker_config = secrets_config.get('docker')
         if docker_config:
