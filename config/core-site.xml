@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+
+<!-- WASB (Azure Storage) Configuration  -->
+<!-- <property>
+  <name>fs.AbstractFileSystem.wasb.Impl</name>
+  <value>org.apache.hadoop.fs.azure.Wasb</value>
+</property>
+<property>
+  <name>fs.azure.account.key.$storage_account_name.blob.$storage_account_suffix</name>
+  <value>$storage_account_key</value>
+</property> -->
+
+<!-- ADL (Azure Data Lake) Configuration -->
+<!-- <property>
+  <name>fs.adl.impl</name>
+  <value>org.apache.hadoop.fs.adl.AdlFileSystem</value>
+</property>
+<property>
+  <name>fs.AbstractFileSystem.adl.impl</name>
+  <value>org.apache.hadoop.fs.adl.Adl</value>
+</property>
+<property>
+  <name>dfs.adls.oauth2.access.token.provider.type</name>
+  <value>ClientCredential</value>
+</property>
+
+<property>
+  <name>dfs.adls.oauth2.refresh.url</name>
+  <value>https://login.microsoftonline.com/$adls_tenant_id/oauth2/token</value>
+</property>
+<property>
+  <name>dfs.adls.oauth2.client.id</name>
+  <value>$adls_client_id</value>
+</property>
+<property>
+  <name>dfs.adls.oauth2.credential</name>
+  <value>$adls_credential</value>
+</property> -->
+
+</configuration>
