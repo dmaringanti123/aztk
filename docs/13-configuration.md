@@ -79,3 +79,23 @@ The following settings available in `spark-defaults.conf` and `spark-env.sh` are
 - spark.master
 
 Also note that this toolkit pre-loads wasb jars, so loading them elsewhere is not necessary.
+
+## Configuring Spark Storage
+
+The Spark cluster can be configured to use different cloud supported storage offerrings (such as Azure Storage Blobs, Azure Data Lake Storage, or any other supported Spark file system). More information can be found in the [Cloud Storage](./30-cloud-storage.md) documentation.
+
+## Placing JARS
+
+Additional JAR files can be added to the cluster by simply adding them to the *.aztk/jars* directory. These JARS will automatically be added to Spark's default JAR directory. In the case of a naming conflict, the file in *.aztk/jars* will **overwrite** the file in the cluster. Typically new JARS must be registered with Spark. To do this, either run the Spark Submit command with a path to the JARS
+
+```sh
+aztk spark cluster submit --id <my_cluster_id> --jars $SPARK_HOME/jars/my_jar_file_1.jar <my_application> <my_parameteres>
+```
+
+Or update the *.aztk/spark-default.conf* file as shown below to have it registered for all Spark applications.
+
+```sh
+spark.jars $spark_home/jars/my_jar_file_1.jar,$spark_home/jars/my_jar_file_2.jar
+````
+
+Note: _This tool automatically registers several JARS for default cloud storage in the spark-default.conf file. If you want to modify this file, simply append any additional JARS to the end of this list_.
